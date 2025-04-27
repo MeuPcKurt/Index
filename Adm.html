@@ -2,15 +2,47 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Alerta na Página</title>
+  <title>Fake Player API</title>
   <script>
+    // Quando a página carrega
     window.onload = function() {
-      alert('Bem-vindo! Esta é a página de alerta.');
-    };
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get('username');
+      const password = params.get('password');
+
+      if (username === 'teste' && password === '1234') {
+        const successResponse = {
+          user_info: {
+            username: username,
+            password: password,
+            auth: 1,
+            status: "Active",
+            message: "Login efetuado com sucesso!",
+            exp_date: Math.floor(new Date().getTime() / 1000) + (30 * 86400)
+          },
+          server_info: {
+            url: "fakepainel.com",
+            port: "8080",
+            server_protocol: "http"
+          },
+          available_channels: [],
+          available_movies: [],
+          available_series: []
+        };
+        document.body.innerText = JSON.stringify(successResponse, null, 2);
+      } else {
+        const errorResponse = {
+          user_info: {
+            auth: 0,
+            status: "Banned",
+            message: "Usuário ou senha incorretos."
+          }
+        };
+        document.body.innerText = JSON.stringify(errorResponse, null, 2);
+      }
+    }
   </script>
 </head>
 <body>
-  <h1>Minha Página com Alert</h1>
-  <p>Assim que você abrir, verá um alerta!</p>
 </body>
 </html>
